@@ -1,0 +1,74 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/space_23"
+    android:layout_marginBottom="@dimen/space_23">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardCornerRadius="@dimen/space_8"
+            app:cardElevation="0dp" />
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/text_old_link"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_23"
+        android:layout_marginLeft="@dimen/space_23"
+        android:layout_marginTop="@dimen/space_23"
+        android:fontFamily="@font/poppins_medium"
+        android:maxLines="2"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/text_17"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="https://www.spiegel.de/sie..." />
+
+    <TextView
+        android:id="@+id/text_new_link"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_23"
+        android:layout_marginLeft="@dimen/space_23"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="@dimen/space_23"
+        android:layout_marginRight="@dimen/space_23"
+        android:layout_marginBottom="32dp"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="@color/accent"
+        android:textSize="@dimen/text_17"
+        android:textStyle="bold"
+        app:elevation="@dimen/space_2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider"
+        tools:text="https://rel.ink/k4|Kyk" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_1"
+        android:layout_marginTop="@dimen/space_12"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintTop_toBottomOf="@+id/text_old_link" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+

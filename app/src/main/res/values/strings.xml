@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Nasa App</string>
+    <string name="image">image</string>
+    <string name="title_get_started">Let’s get started!</string>
+    <string name="msg_get_started">Paste your first link into the field to shorten it</string>
+    <string name="msg_please_add_a_link_here">Please add a link here</string>
+    <string name="msg_shorten_a_link_here">Shorten a link here …</string>
+    <string name="msg_shorten_it">SHORTEN IT!</string>
+    <string name="copy">COPY</string>
+    <string name="copied">COPIED!</string>
+    <string name="title_link_history">Your Link History</string>
+    <string name="title_shortened_url">Shortened URL</string>
+    <string name="msg_url_copied">URL Copied</string>
+    <string name="msg_has_been_shortened">URL has already been shortened</string>
+</resources>
