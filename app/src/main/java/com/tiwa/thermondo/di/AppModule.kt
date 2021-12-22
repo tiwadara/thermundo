@@ -4,17 +4,20 @@ import com.tiwa.thermondo.data.api.NasaService
 import com.tiwa.thermondo.data.constant.Constants
 import com.tiwa.thermondo.data.constant.Constants.TIME_OUT
 import com.tiwa.thermondo.data.repository.DefaultMarsImageRepository
+import com.tiwa.thermondo.data.repository.MarsImagesRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
+@ExperimentalCoroutinesApi
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
@@ -24,7 +27,7 @@ object AppModule {
     fun provideDefaultShortLinkRepository(
         @DefaultDispatcher defaultDispatcher: CoroutineDispatcher,
         nasaService: NasaService,
-    ): DefaultMarsImageRepository {
+    ): MarsImagesRepository {
         return DefaultMarsImageRepository(defaultDispatcher, nasaService)
     }
 

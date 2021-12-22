@@ -1,12 +1,17 @@
 package com.tiwa.thermondo.extensions
 
 import android.widget.ImageView
+import com.bumptech.glide.Glide
 
 /**
  * Displays an image from a URL in an ImageView.
- * If the image is loading or nonexistent, displays the specified placeholder image instead.
  */
 
 fun ImageView.loadImage(url: String?) {
- if (!url.isNullOrEmpty()){}
+    Glide
+        .with(this.rootView.context)
+        .load(url)
+        .centerCrop()
+        .dontAnimate()
+        .into(this)
 }

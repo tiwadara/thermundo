@@ -1,16 +1,14 @@
 package com.tiwa.thermondo.ui.home
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.tiwa.thermondo.data.model.Photo
-import com.tiwa.thermondo.databinding.ListItemLinksBinding
+import com.tiwa.thermondo.databinding.ItemMarsImageBinding
 
 class MarsImageListAdapter(
     private val onCardClick: (Int, Int) -> Unit = { _: Int, _: Int -> },
-    private val context: Context
 ) : ListAdapter<Photo, MarsImageViewHolder>(DIFF_CALLBACK) {
 
     companion object {
@@ -28,14 +26,13 @@ class MarsImageListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MarsImageViewHolder {
         return MarsImageViewHolder(
-            ListItemLinksBinding.inflate(
+            ItemMarsImageBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
             )
         )
     }
 
     override fun onBindViewHolder(holder: MarsImageViewHolder, position: Int) {
-        holder.bindItems(getItem(position), onCardClick, position, context)
+        holder.bindItems(getItem(position), onCardClick, position)
     }
-
 }

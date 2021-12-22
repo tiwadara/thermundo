@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.asLiveData
@@ -13,16 +14,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tiwa.thermondo.databinding.FragmentHomeBinding
 import com.tiwa.thermondo.extensions.showIf
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.*
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val viewModel: HomeViewModel by activityViewModels()
     private lateinit var adapter: MarsImageListAdapter
+    var queryTextChangedJob: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,17 +41,16 @@ class HomeFragment : Fragment() {
     }
 
     private fun initUI() {
+        binding.searchView.setOnQueryTextListener(this)
         initializeAdapter()
     }
 
     private fun initializeAdapter() {
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        adapter = MarsImageListAdapter(
-            { position, id ->
-                val directions = HomeFragmentDirections.actionHomeFragmentToDetailFragment()
-                findNavController().navigate(directions)
-            }, requireContext()
-        )
+        adapter = MarsImageListAdapter { _, id ->
+            val directions = HomeFragmentDirections.actionHomeFragmentToDetailFragment(id)
+            findNavController().navigate(directions)
+        }
         binding.recyclerView.adapter = adapter
     }
 
@@ -78,6 +79,13 @@ class HomeFragment : Fragment() {
             }
             is HomeState.ImagesReturned -> {
                 toggleLoader(false)
+                viewModel.unfilteredList = state.data
+                adapter.submitList(state.data)
+            }
+            HomeState.ClearSearch -> {
+                adapter.submitList(viewModel.unfilteredList)
+            }
+            is HomeState.SearchedImagesReturned -> {
                 adapter.submitList(state.data)
             }
         }
@@ -97,6 +105,27 @@ class HomeFragment : Fragment() {
      */
     private fun toggleLoader(isLoading: Boolean) {
         binding.progressBar.showIf(isLoading)
+    }
+
+    override fun onQueryTextSubmit(query: String): Boolean {
+        viewModel.searchQuery = query
+        binding.searchView.clearFocus()
+        viewModel.search(query)
+        return true
+    }
+
+    override fun onQueryTextChange(newText: String): Boolean {
+        viewModel.searchQuery = newText
+        if (newText.isBlank()) {
+            viewModel.clearSearch()
+            return true
+        }
+        queryTextChangedJob?.cancel()
+        queryTextChangedJob = CoroutineScope(Dispatchers.Main).launch {
+            delay(1000)
+            viewModel.search(newText)
+        }
+        return true
     }
 
     override fun onDestroy() {
