@@ -7,6 +7,7 @@ import com.tiwa.common.DummyData
 import com.tiwa.thermondo.data.api.NasaService
 import com.tiwa.thermondo.ui.home.HomeState
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.first
@@ -24,12 +25,11 @@ class DefaultMarsImageRepositoryTest {
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var repository: MarsImagesRepository
-    private lateinit var service: NasaService
-    private lateinit var dispatcher: CoroutineDispatcher
+    private var service: NasaService = mock()
+    private var dispatcher: CoroutineDispatcher = Dispatchers.IO
 
     @Before
     fun setUp() {
-        service = mock()
         repository = DefaultMarsImageRepository(
             dispatcher,
             service

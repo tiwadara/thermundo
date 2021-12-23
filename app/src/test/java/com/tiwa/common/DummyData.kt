@@ -9,13 +9,9 @@ import com.tiwa.thermondo.data.model.Photo
 @Suppress("UNCHECKED_CAST")
 @VisibleForTesting(otherwise = VisibleForTesting.NONE)
 object DummyData {
-    
-    const val url = "test.com"
 
-    val apiResponseObj = ApiResponse(mutableListOf())
-
-    val photoList: List<Photo> = Gson().fromJson(
-        DependencyProvider.getResponseFromJson("response-list"),
-        object : TypeToken<List<Photo>>(){}.type) as List<Photo>
+    val apiResponseObj: ApiResponse = Gson().fromJson(
+        DependencyProvider.getResponseFromJson("response"),
+        object : TypeToken<ApiResponse>(){}.type) as ApiResponse
 
 }

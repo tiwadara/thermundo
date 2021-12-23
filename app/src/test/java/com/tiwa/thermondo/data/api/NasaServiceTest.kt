@@ -3,6 +3,7 @@ package com.tiwa.thermondo.data.api
 import com.tiwa.common.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runBlockingTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.*
@@ -13,7 +14,6 @@ class NasaServiceTest {
 
     private lateinit var service: NasaService
     private lateinit var mockWebServer: MockWebServer
-    private val testData = DummyData
 
     @get:Rule
     var coroutinesTestRule = CoroutineTestRule()
