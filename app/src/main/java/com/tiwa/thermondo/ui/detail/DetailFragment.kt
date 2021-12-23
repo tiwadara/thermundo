@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import com.tiwa.thermondo.databinding.FragmentDetailBinding
 import com.tiwa.thermondo.extensions.loadImage
+import com.tiwa.thermondo.ui.home.HomeActivity
 import com.tiwa.thermondo.ui.home.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -24,15 +25,15 @@ class DetailFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?): View? {
+        savedInstanceState: Bundle?): View {
         _binding = FragmentDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         val photo = viewModel.unfilteredList.find { it.id == argument.position }
+//        (requireActivity() as HomeActivity).title = photo?.rover?.name
         binding.imageView2.loadImage(photo?.img_src)
         binding.textView.text = photo?.earth_date
     }

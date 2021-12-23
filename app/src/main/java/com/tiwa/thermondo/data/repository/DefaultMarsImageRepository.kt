@@ -20,12 +20,9 @@ class DefaultMarsImageRepository @Inject constructor(
         emit(HomeState.Loading)
         try {
             val response = nasaService.getMarsImages()
-            response.let {
-                emit(HomeState.ImagesReturned(it.photos))
-            }
+            emit(HomeState.ImagesReturned(response.photos))
         } catch (e: Exception) {
             emit(HomeState.Failed<String>(e.message))
         }
     }.flowOn(ioDispatcher)
-
 }

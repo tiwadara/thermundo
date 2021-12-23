@@ -23,7 +23,7 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val viewModel: HomeViewModel by activityViewModels()
-    private lateinit var adapter: MarsImageListAdapter
+    private lateinit var marsImageListAdapter: MarsImageListAdapter
     var queryTextChangedJob: Job? = null
 
     override fun onCreateView(
@@ -46,12 +46,16 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
     private fun initializeAdapter() {
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        adapter = MarsImageListAdapter { _, id ->
+
+        marsImageListAdapter = MarsImageListAdapter { _, id ->
             val directions = HomeFragmentDirections.actionHomeFragmentToDetailFragment(id)
             findNavController().navigate(directions)
         }
-        binding.recyclerView.adapter = adapter
+        with(binding.recyclerView){
+            hasFixedSize()
+            layoutManager =  LinearLayoutManager(requireContext())
+            adapter = marsImageListAdapter
+        }
     }
 
     private fun observeState() {
@@ -80,13 +84,13 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
             is HomeState.ImagesReturned -> {
                 toggleLoader(false)
                 viewModel.unfilteredList = state.data
-                adapter.submitList(state.data)
+                marsImageListAdapter.submitList(state.data)
             }
             HomeState.ClearSearch -> {
-                adapter.submitList(viewModel.unfilteredList)
+                marsImageListAdapter.submitList(viewModel.unfilteredList)
             }
             is HomeState.SearchedImagesReturned -> {
-                adapter.submitList(state.data)
+                marsImageListAdapter.submitList(state.data)
             }
         }
     }

@@ -9,9 +9,9 @@ import org.junit.*
 import java.io.IOException
 
 @ExperimentalCoroutinesApi
-class ShortLinkServiceTest {
+class NasaServiceTest {
 
-    private lateinit var shortLinkService: NasaService
+    private lateinit var service: NasaService
     private lateinit var mockWebServer: MockWebServer
     private val testData = DummyData
 
@@ -21,8 +21,8 @@ class ShortLinkServiceTest {
     @Before
     fun init() {
         mockWebServer = MockWebServer()
-        shortLinkService = DependencyProvider.getRetrofit(mockWebServer.url("/"))
-            .create(com.tiwa.thermondo.data.api.NasaService::class.java)
+        service = DependencyProvider.getRetrofit(mockWebServer.url("/"))
+            .create(NasaService::class.java)
     }
 
     @After
@@ -32,14 +32,14 @@ class ShortLinkServiceTest {
     }
 
     @Test
-    fun getNewSHortLink_returns200() {
+    fun getMarsImages_returns200() {
         queueResponse {
             setResponseCode(200)
             setBody(DependencyProvider.getResponseFromJson("response"))
         }
         runBlocking {
-            shortLinkService.getMarsImages(testData.url).let {
-                Assert.assertNotNull(it.result)
+            service.getMarsImages().let {
+                Assert.assertNotNull(it.photos)
             }
         }
     }

@@ -24,7 +24,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideDefaultShortLinkRepository(
+    fun provideDefaultRepository(
         @DefaultDispatcher defaultDispatcher: CoroutineDispatcher,
         nasaService: NasaService,
     ): MarsImagesRepository {

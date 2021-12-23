@@ -3,7 +3,7 @@ package com.tiwa.thermondo.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tiwa.thermondo.data.model.Photo
-import com.tiwa.thermondo.data.repository.DefaultMarsImageRepository
+import com.tiwa.thermondo.data.repository.MarsImagesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val repository: DefaultMarsImageRepository) :
+class HomeViewModel @Inject constructor(private val repository: MarsImagesRepository) :
     ViewModel() {
 
     var unfilteredList: List<Photo> = mutableListOf()
