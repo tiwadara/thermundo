@@ -3,15 +3,22 @@ package com.tiwa.thermondo.ui.home
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import androidx.lifecycle.asLiveData
+import app.cash.turbine.test
+import com.google.common.truth.ExpectFailure.assertThat
+import com.google.common.truth.Truth
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.tiwa.common.CoroutineTestRule
+import com.tiwa.common.DummyData
 import com.tiwa.thermondo.data.repository.MarsImagesRepository
 import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -21,8 +28,7 @@ import org.mockito.Mockito.`when`
 @ExperimentalCoroutinesApi
 class HomeViewModelTest {
 
-    @Rule
-    @JvmField
+    @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @get:Rule
@@ -32,34 +38,23 @@ class HomeViewModelTest {
 
     private var repository: MarsImagesRepository = mock()
 
-    private var observer: Observer<HomeState<*>> = mock()
-
     @Before
     fun setup() {
-
         viewModel = HomeViewModel(repository = repository)
     }
 
     @Test
-    fun givenStateFlow_whenStateChanges_shouldReturnState() {
-        viewModel.state.asLiveData().observeForever(observer)
-        verify(observer).onChanged(HomeState.Loading)
-        viewModel.state.compareAndSet(HomeState.Loading, HomeState.ImagesReturned(mutableListOf()))
-        verify(observer).onChanged(HomeState.ImagesReturned(mutableListOf()))
-    }
+    fun givenHomeViewModel_whenAnEventIsCalled_shouldReturnState() = coroutineRule.runBlockingTest {
+        `when`(repository.getMarsImages()).thenReturn(flowOf(HomeState.ImagesReturned(DummyData.apiResponseObj.photos)))
 
-    @Test
-    fun givenMessageViewModel_whenAnEventIsCalled_shouldReturnState() = runBlocking {
-        viewModel.state.asLiveData().observeForever(observer)
-        `when`(repository.getMarsImages()).thenReturn(flow {
-            emit(HomeState.Loading)
-            emit(HomeState.ImagesReturned(mutableListOf()))
-        })
-        val response = repository.getMarsImages().toList()
+        viewModel.state.test {
+            viewModel.getMarsImages()
+            Truth.assertThat(awaitItem()).isEqualTo(HomeState.Loading)
+            Truth.assertThat(awaitItem()).isEqualTo(HomeState.ImagesReturned(DummyData.apiResponseObj.photos))
+            cancelAndConsumeRemainingEvents()
+        }
+
         verify(repository, Mockito.times(1)).getMarsImages()
-        assertEquals(response.first(), HomeState.Loading)
-        assertEquals(response.size, 2)
-        assertEquals(response.drop(1).first(), HomeState.ImagesReturned(mutableListOf()))
     }
 
 }

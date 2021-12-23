@@ -20,7 +20,7 @@ class HomeViewModel @Inject constructor(private val repository: MarsImagesReposi
     var searchQuery: String = ""
     private val eventChannel = Channel<HomeEvent>(Channel.UNLIMITED)
     private val _state = MutableStateFlow<HomeState<Any>>(HomeState.Loading)
-    val state: MutableStateFlow<HomeState<Any>>
+    val state: StateFlow<HomeState<Any>>
         get() = _state
 
     init {
