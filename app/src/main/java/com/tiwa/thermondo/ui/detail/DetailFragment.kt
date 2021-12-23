@@ -37,7 +37,7 @@ class DetailFragment : Fragment() {
         val photo = viewModel.unfilteredList.find { it.id == argument.position }
 
         binding.imageView2.loadImage(photo?.img_src)
-        binding.textView.text = getString(R.string.camera, photo?.camera)
+        binding.textView.text = getString(R.string.camera, photo?.camera?.name)
         binding.textView2.text = getString(R.string.camera_full_name, photo?.camera?.full_name)
         binding.textView3.text = getString(R.string.captured_by, photo?.rover?.name)
         binding.textView4.text = getString(R.string.landed_on, photo?.rover?.landing_date)
